@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@layer base {
+  * {
+    border-color: var(--border, #e5e7eb);
+  }
+  body {
+    background-color: #fcfcfc;
+    color: #111827;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom Manus scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.6);
+}

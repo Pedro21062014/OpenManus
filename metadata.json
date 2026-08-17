@@ -1,0 +1,6 @@
+{
+  "name": "OpenManus - Agente Autônomo Open Source",
+  "description": "Aplicativo de agente autônomo open source inspirado no Manus com automação avançada, sandbox E2B, múltiplos provedores de IA, navegador web interativo e biblioteca de artefatos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
