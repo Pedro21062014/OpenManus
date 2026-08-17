@@ -128,7 +128,7 @@ export function Sidebar({
       <aside className="w-16 bg-[#f7f7f8] border-r border-[#e5e7eb] flex flex-col items-center py-4 justify-between select-none h-screen flex-shrink-0 transition-all duration-200">
         <div className="flex flex-col items-center gap-5">
           <div className="flex flex-col items-center gap-2">
-            <ManusLogo size={32} />
+            <ManusLogo size={42} />
             <button
               onClick={() => setIsCollapsed(false)}
               title="Expandir barra lateral"
@@ -205,8 +205,8 @@ export function Sidebar({
           >
             <Settings className="w-4 h-4" />
           </button>
-          <div className="w-8 h-8 rounded-xl bg-stone-900 flex items-center justify-center p-1 shadow-xs overflow-hidden">
-            <ManusLogo size={22} />
+          <div className="w-9 h-9 rounded-xl bg-stone-900 flex items-center justify-center p-1 shadow-xs overflow-hidden">
+            <ManusLogo size={26} />
           </div>
         </div>
       </aside>
@@ -218,7 +218,7 @@ export function Sidebar({
       {/* Top Header */}
       <div className="p-3 border-b border-transparent flex flex-col gap-1">
         <div className="flex items-center justify-between px-1 py-1">
-          <ManusLogo size={30} showText={true} />
+          <ManusLogo size={38} showText={true} />
 
           <div className="flex items-center gap-0.5">
             <button
@@ -435,32 +435,15 @@ export function Sidebar({
 
       {/* Bottom Footer Area */}
       <div className="p-3 border-t border-[#e8eaed] flex flex-col gap-2 bg-[#f8f8f9]">
-        {/* Referral / Share Badge */}
-        <button
-          onClick={onOpenShareModal}
-          className="w-full flex items-center justify-between p-2.5 bg-stone-100/90 hover:bg-stone-200/80 border border-stone-200 rounded-xl transition text-left shadow-2xs group"
-        >
-          <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
-              <Flame className="w-3.5 h-3.5" />
-            </div>
-            <div>
-              <div className="text-xs font-semibold text-stone-800 truncate">Compartilhe OpenManus</div>
-              <div className="text-[10px] text-stone-500">Agente 100% Open Source</div>
-            </div>
-          </div>
-          <ChevronRight className="w-3.5 h-3.5 text-stone-400 group-hover:translate-x-0.5 transition-transform" />
-        </button>
-
         {/* User Profile & Actions Bar */}
-        <div className="flex items-center justify-between pt-1">
+        <div className="flex items-center justify-between py-1">
           <div
             className="flex items-center gap-2.5 cursor-pointer"
             onClick={onOpenE2BModal || onOpenModelManager}
             title="Configurações de Usuário e Chave E2B"
           >
-            <div className="w-8 h-8 rounded-xl bg-stone-900 flex items-center justify-center p-1 shadow-xs overflow-hidden">
-              <ManusLogo size={22} />
+            <div className="w-9 h-9 rounded-xl bg-stone-900 flex items-center justify-center p-1 shadow-xs overflow-hidden">
+              <ManusLogo size={26} />
             </div>
             <div className="flex flex-col">
               <span className="text-xs font-semibold text-stone-900">Meu Workspace</span>

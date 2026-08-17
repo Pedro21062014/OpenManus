@@ -98,7 +98,7 @@ export function ScheduledView({
           </div>
 
           <h2 className="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight max-w-xl leading-snug">
-            Manus trabalha de forma independente, sem que você precise solicitar
+            OpenManus trabalha de forma independente, sem que você precise solicitar
           </h2>
         </div>
 
@@ -278,11 +278,11 @@ export function ScheduledView({
 
               <div>
                 <label className="block text-xs font-semibold text-stone-700 mb-1.5">
-                  Instrução / Prompt do Agente Manus
+                  Instrução / Prompt do Agente OpenManus
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="O que o Manus deve executar autonomamente no horário programado?"
+                  placeholder="O que o OpenManus deve executar autonomamente no horário programado?"
                   value={prompt}
                   onChange={e => setPrompt(e.target.value)}
                   className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-900 outline-none focus:border-stone-400 transition resize-none"

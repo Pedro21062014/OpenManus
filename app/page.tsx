@@ -36,7 +36,7 @@ export default function Home() {
 
   // Hydration-safe persistent state
   const [tasks, setTasks] = useLocalStorage<Task[]>('manus_user_tasks', INITIAL_TASKS);
-  const [activeTaskId, setActiveTaskId] = useState<string>(() => INITIAL_TASKS[0]?.id || 'task-initial');
+  const [activeTaskId, setActiveTaskId] = useState<string>(() => 'task-initial');
   const [e2bApiKey, setE2bApiKey] = useLocalStorage<string>('manus_e2b_api_key', '');
   const [artifacts, setArtifacts] = useLocalStorage<Artifact[]>('manus_user_artifacts', INITIAL_ARTIFACTS);
   const [models, setModels] = useLocalStorage<AIModel[]>('manus_user_models', DEFAULT_AI_MODELS);
@@ -55,14 +55,26 @@ export default function Home() {
 
   const [isGenerating, setIsGenerating] = useState(false);
 
+  // Clean up legacy mock tasks from previous turns if saved in localStorage
+  React.useEffect(() => {
+    setTasks(prev => {
+      const mockIds = ['task-active-1', 'task-past-2', 'task-past-3', 'task-past-4', 'task-past-5', 'task-past-6', 'task-past-7'];
+      const filtered = prev.filter(t => !mockIds.includes(t.id));
+      if (filtered.length !== prev.length) {
+        return filtered;
+      }
+      return prev;
+    });
+  }, [setTasks]);
+
   // Active Task reference
-  const activeTask = tasks.find(t => t.id === activeTaskId) || tasks[0] || {
-    id: 'fallback-task',
+  const activeTask: Task = tasks.find(t => t.id === activeTaskId) || {
+    id: activeTaskId,
     title: 'Nova Conversa',
     status: 'idle',
     iconType: 'sparkles',
-    createdAt: new Date().toISOString(),
-    currentStep: 1,
+    createdAt: 'Agora',
+    currentStep: 0,
     totalSteps: 4,
     messages: [],
     artifacts: [],
@@ -77,25 +89,17 @@ export default function Home() {
     const newTaskId = `task-${Date.now()}`;
     const newTask: Task = {
       id: newTaskId,
-      title: 'Nova Conversa Autônoma',
+      title: 'Nova Conversa',
       status: 'idle',
       iconType: 'sparkles',
-      createdAt: new Date().toISOString(),
-      currentStep: 1,
+      createdAt: 'Agora mesmo',
+      currentStep: 0,
       totalSteps: 4,
-      messages: [
-        {
-          id: `msg-welcome-${newTaskId}`,
-          role: 'assistant',
-          content:
-            'Olá! Sou o OpenManus, seu agente autônomo open source. Você pode me pedir para criar aplicativos web, jogos, simulações, relatórios ou executar comandos diretamente no sandbox E2B.',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-      ],
+      messages: [],
       artifacts: [],
     };
 
-    setTasks(prev => [newTask, ...prev]);
+    setTasks(prev => [newTask, ...prev.filter(t => t.id !== 'task-initial')]);
     setActiveTaskId(newTaskId);
     setCurrentView('agent');
   };
@@ -105,26 +109,8 @@ export default function Home() {
       const updated = prev.filter(t => t.id !== taskId);
       if (updated.length === 0) {
         const freshId = `task-${Date.now()}`;
-        const freshTask: Task = {
-          id: freshId,
-          title: 'Nova Conversa Autônoma',
-          status: 'idle',
-          iconType: 'sparkles',
-          createdAt: new Date().toISOString(),
-          currentStep: 1,
-          totalSteps: 4,
-          messages: [
-            {
-              id: `msg-fresh-${freshId}`,
-              role: 'assistant',
-              content: 'Conversa iniciada. Como posso ajudar com sua próxima tarefa autônoma?',
-              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            },
-          ],
-          artifacts: [],
-        };
         setActiveTaskId(freshId);
-        return [freshTask];
+        return [];
       }
       if (activeTaskId === taskId) {
         setActiveTaskId(updated[0].id);
@@ -160,19 +146,37 @@ export default function Home() {
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    // Update state with user message
-    setTasks(prev =>
-      prev.map(t => {
+    const taskTitle = prompt.slice(0, 38) + (prompt.length > 38 ? '...' : '');
+
+    // Update or insert task with user message
+    setTasks(prev => {
+      const exists = prev.some(t => t.id === activeTaskId);
+      if (!exists) {
+        const newTask: Task = {
+          id: activeTaskId,
+          title: taskTitle,
+          status: 'running',
+          iconType: 'sparkles',
+          createdAt: 'Agora mesmo',
+          currentStep: 1,
+          totalSteps: 4,
+          messages: [userMessage],
+          artifacts: [],
+        };
+        return [newTask, ...prev];
+      }
+      return prev.map(t => {
         if (t.id === activeTaskId) {
           return {
             ...t,
+            title: t.title === 'Nova Conversa' ? taskTitle : t.title,
             status: 'running',
             messages: [...t.messages, userMessage],
           };
         }
         return t;
-      })
-    );
+      });
+    });
 
     try {
       const activeModelObj = models.find(m => m.id === activeModelId);

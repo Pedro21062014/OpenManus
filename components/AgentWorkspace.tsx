@@ -252,17 +252,6 @@ export function AgentWorkspace({
         {/* Right Actions */}
         <div className="flex items-center gap-2.5">
           <button
-            onClick={() => {
-              confetti({ particleCount: 60, spread: 70, origin: { y: 0.2 } });
-              alert('Plano Manus Pro 1.6 ativado com sucesso para seu workspace.');
-            }}
-            className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 rounded-xl text-xs font-semibold transition hidden sm:flex items-center gap-1.5"
-          >
-            <Flame className="w-3.5 h-3.5 text-amber-600" />
-            <span>Iniciar teste gratuito</span>
-          </button>
-
-          <button
             onClick={onOpenShareModal}
             className="px-3 py-1.5 bg-white hover:bg-stone-50 text-stone-700 border border-stone-200 rounded-xl text-xs font-semibold shadow-2xs transition flex items-center gap-1.5"
           >
@@ -299,7 +288,74 @@ export function AgentWorkspace({
           {/* Messages Stream */}
           <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
             <div className="max-w-3xl mx-auto space-y-6">
-              {task.messages.map((message, idx) => {
+              {task.messages.length === 0 ? (
+                <div className="py-12 md:py-16 text-center space-y-8 animate-in fade-in duration-200">
+                  <div className="flex flex-col items-center gap-3">
+                    <ManusLogo size={48} showText={true} />
+                    <h2 className="text-xl md:text-2xl font-extrabold text-stone-900 tracking-tight">
+                      O que você gostaria de construir hoje?
+                    </h2>
+                    <p className="text-xs md:text-sm text-stone-500 max-w-md mx-auto leading-relaxed">
+                      Agente autônomo de código aberto com execução real em sandbox E2B, pesquisa web e raciocínio profundo.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-xl mx-auto">
+                    <button
+                      onClick={() => setInputPrompt('Crie uma plataforma completa de dashboard com gráficos interativos e exportação.')}
+                      className="p-3.5 bg-white border border-stone-200/90 hover:border-stone-400 rounded-2xl shadow-2xs hover:shadow-sm transition group"
+                    >
+                      <div className="flex items-center gap-2 text-xs font-bold text-stone-900 mb-1">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                        <span>Criar Dashboard Interativo</span>
+                      </div>
+                      <p className="text-[11px] text-stone-500 leading-normal">
+                        Aplicativo web com dados em tempo real, métricas e design moderno.
+                      </p>
+                    </button>
+
+                    <button
+                      onClick={() => setInputPrompt('Construa um jogo em HTML5 Canvas com controles de teclado e pontuação.')}
+                      className="p-3.5 bg-white border border-stone-200/90 hover:border-stone-400 rounded-2xl shadow-2xs hover:shadow-sm transition group"
+                    >
+                      <div className="flex items-center gap-2 text-xs font-bold text-stone-900 mb-1">
+                        <Play className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Desenvolver Jogo Canvas</span>
+                      </div>
+                      <p className="text-[11px] text-stone-500 leading-normal">
+                        Jogos interativos com física, efeitos sonoros e pontuações.
+                      </p>
+                    </button>
+
+                    <button
+                      onClick={() => setInputPrompt('Execute um script Python no Sandbox E2B para auditar dados e gerar relatório.')}
+                      className="p-3.5 bg-white border border-stone-200/90 hover:border-stone-400 rounded-2xl shadow-2xs hover:shadow-sm transition group"
+                    >
+                      <div className="flex items-center gap-2 text-xs font-bold text-stone-900 mb-1">
+                        <Terminal className="w-3.5 h-3.5 text-sky-600" />
+                        <span>Automação E2B Sandbox</span>
+                      </div>
+                      <p className="text-[11px] text-stone-500 leading-normal">
+                        Execução de comandos bash, bibliotecas Python e testes de API.
+                      </p>
+                    </button>
+
+                    <button
+                      onClick={() => setInputPrompt('Pesquise as últimas novidades sobre inteligência artificial e resuma os avanços.')}
+                      className="p-3.5 bg-white border border-stone-200/90 hover:border-stone-400 rounded-2xl shadow-2xs hover:shadow-sm transition group"
+                    >
+                      <div className="flex items-center gap-2 text-xs font-bold text-stone-900 mb-1">
+                        <Globe className="w-3.5 h-3.5 text-purple-600" />
+                        <span>Pesquisa Web Autônoma</span>
+                      </div>
+                      <p className="text-[11px] text-stone-500 leading-normal">
+                        Navegação profunda e síntese estruturada de conteúdos online.
+                      </p>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                task.messages.map((message, idx) => {
                 const isUser = message.role === 'user';
 
                 if (isUser) {
@@ -315,9 +371,9 @@ export function AgentWorkspace({
                 // Assistant message
                 return (
                   <div key={message.id} className="space-y-4">
-                    {/* Manus Header with Avatar */}
+                    {/* OpenManus Header with Avatar */}
                     <div className="flex items-center gap-2.5">
-                      <ManusLogo size={22} showText={true} />
+                      <ManusLogo size={26} showText={true} />
                     </div>
 
                     {/* Summary text */}
@@ -453,7 +509,8 @@ export function AgentWorkspace({
                     )}
                   </div>
                 );
-              })}
+              })
+              )}
 
               {isGenerating && (
                 <div className="space-y-3 animate-pulse">
@@ -723,7 +780,7 @@ export function AgentWorkspace({
                           Navegador de Sandbox Pronto
                         </h4>
                         <p className="text-[11px] text-stone-500 max-w-xs">
-                          O Manus navega automaticamente, clica e inspeciona elementos web durante as tarefas.
+                          O OpenManus navega automaticamente, clica e inspeciona elementos web durante as tarefas.
                         </p>
                       </div>
                     )}
